@@ -1,4 +1,56 @@
 
+spin.addEventListener("click", () => {
+  if (spinning) return;
+
+  if (!prizes.length) {
+    result.textContent = "Önce en az bir isim ekle!";
+    return;
+  }
+
+  spinning = true;
+  spin.disabled = true;
+  result.textContent = "🎡 Çark dönüyor...";
+
+  const arc = (2 * Math.PI) / prizes.length;
+  const winner = Math.floor(Math.random() * prizes.length);
+
+  const start = rotation;
+  const current = ((start % (2 * Math.PI)) + 2 * Math.PI)
+    % (2 * Math.PI);
+
+  // Okun tam olarak kazanan dilimin merkezinde durmasını sağlar.
+  const desired = (-(winner + 0.5) * arc + 2 * Math.PI)
+    % (2 * Math.PI);
+
+  const extra = (desired - current + 2 * Math.PI)
+    % (2 * Math.PI);
+
+  const target = start + 2 * Math.PI * 6 + extra;
+  const startTime = performance.now();
+  const duration = 4200;
+
+  function animate(now) {
+    const progress = Math.min(1, (now - startTime) / duration);
+    const eased = 1 - Math.pow(1 - progress, 4);
+
+    rotation = start + (target - start) * eased;
+    drawWheel();
+
+    if (progress < 1) {
+      requestAnimationFrame(animate);
+    } else {
+      rotation = target % (2 * Math.PI);
+      drawWheel();
+
+      result.textContent = "🏆 KAZANAN: " + prizes[winner];
+
+      spinning = false;
+      spin.disabled = false;
+    }
+  }
+
+  requestAnimationFrame(animate);
+});
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -227,48 +279,60 @@ input:focus{border-color:#a78bfa}
     result.textContent = "Varsayılan isimler geri yüklendi.";
   });
 
-  spin.addEventListener("click", () => {
-    if (spinning) return;
-    if (!prizes.length) {
-      result.textContent = "Önce en az bir isim ekle!";
-      return;
-    }
+ 
+spin.addEventListener("click", () => {
+  if (spinning) return;
 
-    spinning = true;
-    spin.disabled = true;
-    result.textContent = "🎡 Çark dönüyor...";
+  if (!prizes.length) {
+    result.textContent = "Önce en az bir isim ekle!";
+    return;
+  }
 
-    const arc = 2 * Math.PI / prizes.length;
-    const winner = Math.floor(Math.random() * prizes.length);
-    const current = ((rotation % (2 * Math.PI)) + 2 * Math.PI)
-      % (2 * Math.PI);
-    const desired = (Math.PI * 1.5 - (winner + 0.5) * arc
-      + 2 * Math.PI) % (2 * Math.PI);
-    const extra = (desired - current + 2 * Math.PI) % (2 * Math.PI);
-    const start = rotation;
-    const target = start + 2 * Math.PI * 6 + extra;
-    const startTime = performance.now();
-    const duration = 4200;
+  spinning = true;
+  spin.disabled = true;
+  result.textContent = "🎡 Çark dönüyor...";
 
-    function animate(now) {
-      const progress = Math.min(1, (now - startTime) / duration);
-      const eased = 1 - Math.pow(1 - progress, 4);
-      rotation = start + (target - start) * eased;
+  const arc = (2 * Math.PI) / prizes.length;
+  const winner = Math.floor(Math.random() * prizes.length);
+
+  const start = rotation;
+  const current = ((start % (2 * Math.PI)) + 2 * Math.PI)
+    % (2 * Math.PI);
+
+  // Okun tam olarak kazanan dilimin merkezinde durmasını sağlar.
+  const desired = (-(winner + 0.5) * arc + 2 * Math.PI)
+    % (2 * Math.PI);
+
+  const extra = (desired - current + 2 * Math.PI)
+    % (2 * Math.PI);
+
+  const target = start + 2 * Math.PI * 6 + extra;
+  const startTime = performance.now();
+  const duration = 4200;
+
+  function animate(now) {
+    const progress = Math.min(1, (now - startTime) / duration);
+    const eased = 1 - Math.pow(1 - progress, 4);
+
+    rotation = start + (target - start) * eased;
+    drawWheel();
+
+    if (progress < 1) {
+      requestAnimationFrame(animate);
+    } else {
+      rotation = target % (2 * Math.PI);
       drawWheel();
 
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      } else {
-        rotation = target % (2 * Math.PI);
-        drawWheel();
-       result.innerHTML = "🏆 KAZANAN<br><span style='color:#c4b5fd;font-size:28px'>" +
-  prizes[winner] + "</span>";
-        spinning = false;
-        spin.disabled = false;
-      }
+      result.textContent = "🏆 KAZANAN: " + prizes[winner];
+
+      spinning = false;
+      spin.disabled = false;
     }
-    requestAnimationFrame(animate);
-  });
+  }
+
+  requestAnimationFrame(animate);
+});
+
 
   renderList();
   drawWheel();
