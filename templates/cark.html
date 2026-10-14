@@ -261,7 +261,8 @@ input:focus{border-color:#a78bfa}
       } else {
         rotation = target % (2 * Math.PI);
         drawWheel();
-        result.textContent = "🎉 Sonuç: " + prizes[winner] + "!";
+       result.innerHTML = "🏆 KAZANAN<br><span style='color:#c4b5fd;font-size:28px'>" +
+  prizes[winner] + "</span>";
         spinning = false;
         spin.disabled = false;
       }
