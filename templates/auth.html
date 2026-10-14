@@ -9,31 +9,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <style>
-    /* Keep the authentication form inside its card, including grid children. */
-    .auth-card {
-      width: min(480px, calc(100% - 32px));
-      max-width: 100%;
-      min-width: 0;
-      box-sizing: border-box;
-    }
-    .auth-form {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr);
-      width: 100%;
-      min-width: 0;
-      box-sizing: border-box;
-    }
-    .auth-form label,
-    .auth-form input,
-    .auth-form button {
-      min-width: 0;
-      max-width: 100%;
-      box-sizing: border-box;
-    }
-    .auth-form input {
-      display: block;
-      width: 100%;
-    }
+    .auth-card { width: min(480px, calc(100% - 32px)); max-width: 100%; min-width: 0; box-sizing: border-box; }
+    .auth-form { display: grid; grid-template-columns: minmax(0, 1fr); width: 100%; min-width: 0; box-sizing: border-box; }
+    .auth-form label, .auth-form input, .auth-form button { min-width: 0; max-width: 100%; box-sizing: border-box; }
+    .auth-form input { display: block; width: 100%; }
   </style>
 </head>
 <body class="auth-page">
@@ -52,7 +31,6 @@
       <p class="eyebrow">TİTANLAR TOPLULUĞU</p>
       <h1>{{ 'Hesap oluştur' if mode == 'register' else 'Tekrar hoş geldin' }}</h1>
       <p class="auth-subtitle">{{ 'Topluluğa özel hesabını oluştur.' if mode == 'register' else 'Hesabına giriş yap ve devam et.' }}</p>
-
       {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
           <div class="flash-list">
@@ -62,29 +40,21 @@
           </div>
         {% endif %}
       {% endwith %}
-
       <form method="post" class="auth-form">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-
         {% if mode == 'register' %}
           <label for="username">Kullanıcı adı</label>
           <input id="username" name="username" type="text" minlength="3" maxlength="24" pattern="[A-Za-z0-9_-]+" autocomplete="username" required placeholder="Örn. titan_01">
-
           <label for="email">E-posta</label>
           <input id="email" name="email" type="email" maxlength="254" autocomplete="email" required placeholder="ornek@mail.com">
         {% else %}
           <label for="identity">Kullanıcı adı veya e-posta</label>
-          <input id="identity" name="identity" autocomplete="username" required placeholder="Kullanıcı adın veya e-posta adresin">
+          <input id="identity" name="identity" type="text" autocomplete="username" required placeholder="Kullanıcı adın veya e-posta adresin">
         {% endif %}
-
         <label for="password">Şifre</label>
         <input id="password" name="password" type="password" minlength="8" autocomplete="{{ 'new-password' if mode == 'register' else 'current-password' }}" required placeholder="En az 8 karakter">
-
-        <button class="button auth-submit" type="submit">
-          {{ 'Hesap oluştur' if mode == 'register' else 'Giriş yap' }} <span>↗</span>
-        </button>
+        <button class="button auth-submit" type="submit">{{ 'Hesap oluştur' if mode == 'register' else 'Giriş yap' }} <span>↗</span></button>
       </form>
-
       <p class="auth-switch">
         {% if mode == 'register' %}
           Zaten hesabın var mı? <a href="{{ url_for('login') }}">Giriş yap</a>
