@@ -1,2 +1,117 @@
 <!doctype html>
-<html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#080611"><title>Hesabım — Titanlar</title><link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></head><body class="auth-page"><div class="ambient ambient-one"></div><div class="ambient ambient-two"></div><header class="topbar"><a class="brand" href="{{ url_for('home') }}"><img class="brand-logo" src="{{ url_for('static', filename='titanlar-logo.png') }}" alt="Titanlar logosu"><span>TITANLAR</span></a><a class="account-link" href="{{ url_for('home') }}">Ana sayfa</a></header><main class="auth-wrap"><section class="auth-card panel"><img class="auth-logo" src="{{ url_for('static', filename='titanlar-logo.png') }}" alt="Titanlar logosu"><p class="eyebrow">ÜYE PANELİ</p><h1>Hoş geldin, {{ user['username'] }}!</h1><p class="auth-subtitle">Titanlar hesabın aktif.</p>{% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}{% for category, message in messages %}<p class="flash {{ category }}">{{ message }}</p>{% endfor %}{% endif %}{% endwith %}<div class="account-details"><div><span>Kullanıcı adı</span><strong>{{ user['username'] }}</strong></div><div><span>E-posta</span><strong>{{ user['email'] }}</strong></div><div><span>Üyelik tarihi</span><strong>{{ user['created_at'] }}</strong></div></div><a class="button auth-submit" href="https://discord.gg/titanlar" target="_blank" rel="noopener noreferrer">Discord'a katıl ↗</a><form method="post" action="{{ url_for('logout') }}">{{ csrf_token() }}<button class="button button-ghost auth-submit" type="submit">Çıkış yap</button></form></section></main></body></html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080611">
+  <title>Hesabım — Titanlar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    .account-card {
+      width: min(560px, calc(100% - 32px));
+      max-width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    .account-details {
+      display: grid;
+      gap: 12px;
+      width: 100%;
+      min-width: 0;
+      margin: 24px 0;
+    }
+    .account-details > div {
+      min-width: 0;
+      max-width: 100%;
+      box-sizing: border-box;
+      overflow-wrap: anywhere;
+    }
+    .account-details strong {
+      display: block;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+    .account-actions {
+      display: grid;
+      gap: 12px;
+      width: 100%;
+      min-width: 0;
+    }
+    .account-actions a,
+    .account-actions button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+      text-decoration: none;
+    }
+    .account-actions form {
+      display: block;
+      width: 100%;
+      min-width: 0;
+      margin: 0;
+    }
+    .account-actions input[type="hidden"] {
+      display: none !important;
+    }
+  </style>
+</head>
+<body class="auth-page">
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+  <header class="topbar">
+    <a class="brand" href="{{ url_for('home') }}">
+      <img class="brand-logo" src="{{ url_for('static', filename='titanlar-logo.png') }}" alt="Titanlar logosu">
+      <span>TITANLAR</span>
+    </a>
+    <a class="account-link" href="{{ url_for('home') }}">← Ana sayfa</a>
+  </header>
+
+  <main class="auth-wrap">
+    <section class="auth-card account-card panel">
+      <img class="auth-logo" src="{{ url_for('static', filename='titanlar-logo.png') }}" alt="Titanlar logosu">
+      <p class="eyebrow">TİTANLAR TOPLULUĞU</p>
+      <h1>Hoş geldin, {{ user['username'] }}!</h1>
+      <p class="auth-subtitle">Titanlar hesabın aktif.</p>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash-list">
+            {% for category, message in messages %}
+              <p class="flash {{ category }}">{{ message }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      <div class="account-details">
+        <div>
+          <span>Kullanıcı adı</span>
+          <strong>{{ user['username'] }}</strong>
+        </div>
+        <div>
+          <span>E-posta</span>
+          <strong>{{ user['email'] }}</strong>
+        </div>
+        <div>
+          <span>Üyelik tarihi</span>
+          <strong>{{ user['created_at'] }}</strong>
+        </div>
+      </div>
+
+      <div class="account-actions">
+        <a class="button auth-submit" href="https://discord.gg/titanlar" target="_blank" rel="noopener noreferrer">Discord'a katıl ↗</a>
+        <form method="post" action="{{ url_for('logout') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="button button-ghost auth-submit" type="submit">Çıkış yap</button>
+        </form>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
