@@ -1,10 +1,104 @@
-from flask import Flask, render_template
+import os
+import sqlite3
+from pathlib import Path
+from flask import Flask, render_template, request, redirect, url_for, session, flash, g
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_wtf.csrf import CSRFProtect
 
 app = Flask(__name__)
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "change-this-secret-before-deploying")
+app.config["SESSION_COOKIE_HTTPONLY"] = True
+app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+app.config["SESSION_COOKIE_SECURE"] = os.environ.get("RENDER", "") == "true"
+CSRFProtect(app)
+
+# SQLite works out of the box. On Render, use a persistent disk or external PostgreSQL
+# if you need accounts to survive redeploys/restarts.
+DB_PATH = os.environ.get("DATABASE_PATH", str(Path(__file__).with_name("titanlar.db")))
+
+def get_db():
+    if "db" not in g:
+        g.db = sqlite3.connect(DB_PATH)
+        g.db.row_factory = sqlite3.Row
+    return g.db
+
+@app.teardown_appcontext
+def close_db(error=None):
+    db = g.pop("db", None)
+    if db is not None:
+        db.close()
+
+def init_db():
+    with sqlite3.connect(DB_PATH) as db:
+        db.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL COLLATE NOCASE UNIQUE, email TEXT NOT NULL COLLATE NOCASE UNIQUE, password_hash TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)")
+
+init_db()
 
 @app.route("/")
 def home():
     return render_template("index.html")
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if session.get("user_id"):
+        return redirect(url_for("account"))
+    if request.method == "POST":
+        username = request.form.get("username", "").strip()
+        email = request.form.get("email", "").strip().lower()
+        password = request.form.get("password", "")
+        if len(username) < 3 or len(username) > 24 or not username.replace("_", "").replace("-", "").isalnum():
+            flash("Kullanıcı adı 3-24 karakter olmalı; harf, rakam, _ veya - kullan.", "error")
+        elif len(email) > 254 or "@" not in email or "." not in email.rsplit("@", 1)[-1]:
+            flash("Geçerli bir e-posta adresi gir.", "error")
+        elif len(password) < 8:
+            flash("Şifren en az 8 karakter olmalı.", "error")
+        else:
+            try:
+                db = get_db()
+                cur = db.execute("INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)", (username, email, generate_password_hash(password)))
+                db.commit()
+                session.clear()
+                session["user_id"] = cur.lastrowid
+                session["username"] = username
+                flash("Hesabın oluşturuldu, hoş geldin!", "success")
+                return redirect(url_for("account"))
+            except sqlite3.IntegrityError:
+                flash("Bu kullanıcı adı veya e-posta zaten kullanılıyor.", "error")
+    return render_template("auth.html", mode="register")
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if session.get("user_id"):
+        return redirect(url_for("account"))
+    if request.method == "POST":
+        identity = request.form.get("identity", "").strip()
+        password = request.form.get("password", "")
+        user = get_db().execute("SELECT * FROM users WHERE username = ? COLLATE NOCASE OR email = ? COLLATE NOCASE", (identity, identity)).fetchone()
+        if user and check_password_hash(user["password_hash"], password):
+            session.clear()
+            session["user_id"] = user["id"]
+            session["username"] = user["username"]
+            flash("Tekrar hoş geldin!", "success")
+            return redirect(url_for("account"))
+        flash("Bilgiler hatalı. Kullanıcı adı/e-posta ve şifreni kontrol et.", "error")
+    return render_template("auth.html", mode="login")
+
+@app.route("/account")
+def account():
+    if not session.get("user_id"):
+        flash("Önce giriş yapmalısın.", "error")
+        return redirect(url_for("login"))
+    user = get_db().execute("SELECT username, email, created_at FROM users WHERE id = ?", (session["user_id"],)).fetchone()
+    if not user:
+        session.clear()
+        return redirect(url_for("login"))
+    return render_template("account.html", user=user)
+
+@app.route("/logout", methods=["POST"])
+def logout():
+    session.clear()
+    flash("Güvenli şekilde çıkış yaptın.", "success")
+    return redirect(url_for("home"))
 
 @app.route("/health")
 def health():
