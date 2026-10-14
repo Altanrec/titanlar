@@ -42,8 +42,11 @@ spin.addEventListener("click", () => {
       rotation = target % (2 * Math.PI);
       drawWheel();
 
-      result.textContent = "🏆 KAZANAN: " + prizes[winner];
+result.textContent = "🏆 KAZANAN: " + prizes[winner];
 
+setTimeout(() => {
+  result.textContent = "";
+}, 3000);
       spinning = false;
       spin.disabled = false;
     }
