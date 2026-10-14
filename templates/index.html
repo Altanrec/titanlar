@@ -12,22 +12,12 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <div class="ambient ambient-one"></div>
-  <div class="ambient ambient-two"></div>
-
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
   <header class="topbar">
-    <a class="brand" href="#home" aria-label="Titanlar ana sayfa">
-      <img class="brand-logo" src="{{ url_for('static', filename='titanlar-logo.png') }}" alt="Titanlar logosu">
-      <span>TITANLAR</span>
-    </a>
+    <a class="brand" href="#home" aria-label="Titanlar ana sayfa"><img class="brand-logo" src="{{ url_for('static', filename='titanlar-logo.png') }}" alt="Titanlar logosu"><span>TITANLAR</span></a>
     <button class="menu-toggle" aria-label="Menüyü aç" aria-expanded="false">☰</button>
     <nav class="nav-links" id="nav-links">
-      <a class="active" href="#home">Ana Sayfa</a>
-      <a href="#about">Hakkımızda</a>
-      <a href="#events">Etkinlikler</a>
-      <a href="#rules">Kurallar</a>
-      <a href="#team">Yetkili Ekibi</a>
-      <a href="#faq">SSS</a>
+      <a class="active" href="#home">Ana Sayfa</a><a href="#about">Hakkımızda</a><a href="#events">Etkinlikler</a><a href="#rules">Kurallar</a><a href="#team">Yetkili Ekibi</a><a href="#faq">SSS</a>
     </nav>
     <div class="account-nav">
       {% if session.get('user_id') %}
@@ -53,11 +43,8 @@
         <div class="hero-note"><span class="note-line"></span> BİRLİKTE DAHA GÜÇLÜYÜZ</div>
       </div>
       <div class="hero-art" aria-hidden="true">
-        <div class="orbit orbit-a"></div>
-        <div class="orbit orbit-b"></div>
-        <img class="hero-logo" src="{{ url_for('static', filename='titanlar-logo.png') }}" alt="Titanlar logosu">
-        <div class="floating-shard shard-a"></div>
-        <div class="floating-shard shard-b"></div>
+        <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div>
+        <img class="hero-logo" src="{{ url_for('static', filename='titanlar-logo.png') }}" alt="Titanlar logosu"><div class="floating-shard shard-a"></div><div class="floating-shard shard-b"></div>
         <div class="art-caption"><span>TOPLULUĞUNU BUL</span><strong>GÜCÜNÜ BİRLEŞTİR.</strong></div>
       </div>
       <div class="hero-bottom-glow"></div>
@@ -73,8 +60,7 @@
 
     <section class="content-grid section-wrap" id="about">
       <article class="about-card panel">
-        <p class="eyebrow">SUNUCU HAKKINDA</p>
-        <h2>Neden Titanlar?</h2>
+        <p class="eyebrow">SUNUCU HAKKINDA</p><h2>Neden Titanlar?</h2>
         <p>Titanlar yalnızca bir Discord sunucusu değil; birlikte oyun oynayabileceğin, sohbet edebileceğin ve kendini topluluğun bir parçası hissedebileceğin bir buluşma noktası.</p>
         <p>Sen de aramıza katıl, kendi hikâyeni yaz!</p>
         <a class="button button-small" href="https://discord.gg/titanlar" target="_blank" rel="noopener noreferrer">◈ Aramıza Katıl</a>
@@ -112,25 +98,17 @@
       <div class="steps-grid"><article class="step-card"><span>01</span><h3>Sunucuya katıl</h3><p>Discord davet bağlantısını aç.</p></article><article class="step-card"><span>02</span><h3>Kuralları oku</h3><p>Topluluk kurallarına göz at ve kanalları keşfet.</p></article><article class="step-card"><span>03</span><h3>Selam ver!</h3><p>Kendini tanıt, sohbete katıl ve yeni arkadaşlar edin.</p></article></div>
     </section>
 
-    <!-- Yetkili ekibi: mevcut team CSS sınıfları kullanılarak eklendi. -->
     <section class="team panel section-wrap" id="team">
-      <div class="team-intro">
-        <p class="eyebrow">ARKAMIZDAKİ GÜÇ</p>
-        <h2>Yetkili Ekibi</h2>
-        <p>Titanlar topluluğunu yöneten ekip.</p>
-      </div>
+      <div class="team-intro"><p class="eyebrow">ARKAMIZDAKİ GÜÇ</p><h2>Yetkili Ekibi</h2><p>Topluluğu daha iyi bir yer yapmak için buradayız.</p></div>
       <div class="team-member"><div class="avatar">♛</div><strong>Kurucu</strong><span>@Bosstan</span></div>
       <div class="team-member"><div class="avatar">⚔</div><strong>Yönetici</strong><span>@uzi</span></div>
       <div class="team-member"><div class="avatar">⚔</div><strong>Yönetici</strong><span>@trojenx</span></div>
       <div class="team-member"><div class="avatar">⚔</div><strong>Yönetici</strong><span>@baemi</span></div>
-      <div class="team-member"><div class="avatar">⚔</div><strong>Yönetici</strong><span>@valentizwice</span></div>
-      <div class="team-member"><div class="avatar">⚔</div><strong>Yönetici</strong><span>@Ceku</span></div>
-      <div class="team-member"><div class="avatar">⚔</div><strong>Yönetici</strong><span>@Zenchy77</span></div>
-      <div class="team-member"><div class="avatar">⚔</div><strong>Yönetici</strong><span>@RedJohn</span></div>
+      <div class="team-member"><div class="avatar">⚔</div><strong>Yönetici</strong><span>@valenti</span></div>
+      <div class="team-member"><div class="avatar">⚔</div><strong>Yönetici</strong><span>@zwice</span></div>
       <div class="team-member"><div class="avatar">◈</div><strong>Moderatör</strong><span>@bekir</span></div>
       <div class="team-member"><div class="avatar">◈</div><strong>Moderatör</strong><span>@axero</span></div>
       <div class="team-member"><div class="avatar">◈</div><strong>Moderatör</strong><span>@coolboy</span></div>
-      <div class="team-member"><div class="avatar">◇</div><strong>Diğer Yetkililer</strong><span>Belirtilmedi</span></div>
     </section>
 
     <section class="faq-section section-wrap" id="faq">
