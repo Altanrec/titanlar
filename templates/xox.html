@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>XOX - Titanlar</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .board { display: grid; grid-template-columns: repeat(3, 100px); gap: 5px; justify-content: center; margin: 20px auto; }
+        .cell { width: 100px; height: 100px; background: #222; color: #fff; font-size: 2.5rem; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 8px;}
+    </style>
+</head>
+<body style="text-align:center;">
+    <h1>❌ Tic-Tac-Toe (XOX)</h1>
+    <p id="status">Sıra sizde (X)</p>
+    <div class="board" id="board"></div>
+    <button class="btn" onclick="resetBoard()">Yeniden Başla</button>
+    <div style="margin-top:20px;"><a href="{{ url_for('games_hub') }}" class="btn">Oyunlara Dön</a></div>
+
+    <script>
+        let board = ['', '', '', '', '', '', '', '', ''];
+        let isGameActive = true;
+        const winningConditions = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]];
+        const boardEl = document.getElementById('board');
+
+        function render() {
+            boardEl.innerHTML = '';
+            board.forEach((val, i) => {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.innerText = val;
+                cell.onclick = () => makeMove(i);
+                boardEl.appendChild(cell);
+            });
+        }
+
+        function makeMove(i) {
+            if (board[i] !== '' || !isGameActive) return;
+            board[i] = 'X';
+            checkWin();
+            if (isGameActive) {
+                aiMove();
+                checkWin();
+            }
+            render();
+        }
+
+        function aiMove() {
+            let empty = board.map((v, i) => v === '' ? i : null).filter(v => v !== null);
+            if (empty.length > 0 && isGameActive) {
+                let randomCell = empty[Math.floor(Math.random() * empty.length)];
+                board[randomCell] = 'O';
+            }
+        }
+
+        function checkWin() {
+            let roundWon = false;
+            for (let condition of winningConditions) {
+                let [a, b, c] = condition;
+                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                    roundWon = true;
+                    if (board[a] === 'X') {
+                        document.getElementById('status').innerText = 'Kazandın!';
+                        sendWin();
+                    } else {
+                        document.getElementById('status').innerText = 'Yapay Zeka Kazandı!';
+                    }
+                    isGameActive = false;
+                    break;
+                }
+            }
+        }
+
+        function sendWin() {
+            fetch("/api/score", {
+                method: "POST",
+                headers: {"Content-Type": "application/json", "X-CSRFToken": "{{ csrf_token() }}"},
+                body: JSON.stringify({game: "xox", val: 1})
+            });
+        }
+
+        function resetBoard() {
+            board = ['', '', '', '', '', '', '', '', ''];
+            isGameActive = true;
+            document.getElementById('status').innerText = 'Sıra sizde (X)';
+            render();
+        }
+        render();
+    </script>
+</body>
+</html>
