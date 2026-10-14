@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080611">
+  <meta name="description" content="Titanlar Discord topluluğuna katıl. Oyun, sohbet, etkinlikler ve yeni arkadaşlar seni bekliyor.">
+  <title>Titanlar — Seni Bekliyor!</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="Titanlar ana sayfa"><span class="brand-mark">T</span><span>TITANLAR</span></a>
+    <button class="menu-toggle" aria-label="Menüyü aç" aria-expanded="false">☰</button>
+    <nav class="nav-links" id="nav-links">
+      <a class="active" href="#home">Ana Sayfa</a><a href="#about">Hakkımızda</a><a href="#rules">Kurallar</a><a href="#team">Yetkili Ekibi</a>
+    </nav>
+    <a class="button button-small" href="https://discord.gg/titanlar" target="_blank" rel="noopener noreferrer">◈ Discord'a Katıl</a>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="pulse-dot"></span> OYUNCULARIN VE SOHBETSEVERLERİN BULUŞMA NOKTASI</p>
+        <h1>TİTANLAR<br><span>SENİ BEKLİYOR!</span></h1>
+        <p class="hero-text">Oyun, sohbet, arkadaşlık ve daha fazlası...<br>Titanlar Discord sunucusunda sen de yerini al!</p>
+        <div class="hero-actions">
+          <a class="button" href="https://discord.gg/titanlar" target="_blank" rel="noopener noreferrer">◈ Discord'a Katıl <span>↗</span></a>
+          <a class="button button-ghost" href="#about">Sunucuyu Keşfet <span>↓</span></a>
+        </div>
+        <div class="hero-note"><span class="note-line"></span> BİRLİKTE DAHA GÜÇLÜYÜZ</div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div>
+        <div class="sigil">T</div><div class="floating-shard shard-a"></div><div class="floating-shard shard-b"></div>
+        <div class="art-caption"><span>TOPLULUĞUNU BUL</span><strong>GÜCÜNÜ BİRLEŞTİR.</strong></div>
+      </div>
+      <div class="hero-bottom-glow"></div>
+    </section>
+
+    <section class="features" aria-label="Sunucu özellikleri">
+      <article class="feature"><div class="feature-icon">⌘</div><h3>Oyun Kanalları</h3><p>Birlikte oyna, birlikte eğlen.</p></article>
+      <article class="feature"><div class="feature-icon">☏</div><h3>Sohbet Odaları</h3><p>Her konuda sohbete katıl.</p></article>
+      <article class="feature"><div class="feature-icon">♟</div><h3>Aktif Topluluk</h3><p>Yeni insanlarla tanış.</p></article>
+      <article class="feature"><div class="feature-icon">⬡</div><h3>Güvenli Ortam</h3><p>Saygı ve düzen önceliğimiz.</p></article>
+      <article class="feature"><div class="feature-icon">✦</div><h3>Etkinlikler</h3><p>Sürpriz etkinlikleri keşfet.</p></article>
+    </section>
+
+    <section class="content-grid section-wrap" id="about">
+      <article class="about-card panel">
+        <p class="eyebrow">SUNUCU HAKKINDA</p><h2>Neden Titanlar?</h2>
+        <p>Titanlar yalnızca bir Discord sunucusu değil; birlikte oyun oynayabileceğin, sohbet edebileceğin ve kendini topluluğun bir parçası hissedebileceğin bir buluşma noktası.</p>
+        <p>Sen de aramıza katıl, kendi hikâyeni yaz!</p>
+        <a class="button button-small" href="https://discord.gg/titanlar" target="_blank" rel="noopener noreferrer">◈ Aramıza Katıl</a>
+      </article>
+      <article class="panel stats-card">
+        <p class="eyebrow">TİTANLAR TOPLULUĞU</p><h2>Sunucu Bilgileri</h2>
+        <div class="stat-row"><span>✧ Toplam üye</span><strong>Topluluğa katıl</strong></div>
+        <div class="stat-row"><span>◉ Aktif sohbet</span><strong>Her gün</strong></div>
+        <div class="stat-row"><span>⌘ Kategori</span><strong>Oyun & Sohbet</strong></div>
+        <div class="stat-row"><span>✦ Etkinlikler</span><strong>Seni bekliyor</strong></div>
+        <p class="tiny-note">Üye sayıları canlı Discord verisi değildir.</p>
+      </article>
+      <article class="panel rules-card" id="rules">
+        <p class="eyebrow">TOPLULUK REHBERİ</p><h2>Sunucu Kuralları</h2>
+        <ol class="rules-list">
+          <li><span>01</span><div><strong>Saygılı ol.</strong><p>Herkese karşı nazik ve anlayışlı davran.</p></div></li>
+          <li><span>02</span><div><strong>Hakaret etme.</strong><p>Küfür, taciz ve ayrımcılıktan kaçın.</p></div></li>
+          <li><span>03</span><div><strong>Spam yapma.</strong><p>İzinsiz reklam ve mesaj spamı yasaktır.</p></div></li>
+          <li><span>04</span><div><strong>Yetkililere uy.</strong><p>Topluluk düzeni için verilen uyarılara uy.</p></div></li>
+        </ol>
+      </article>
+    </section>
+
+    <section class="team panel section-wrap" id="team">
+      <div class="team-intro"><p class="eyebrow">ARKAMIZDAKİ GÜÇ</p><h2>Yetkili Ekibi</h2><p>Topluluğu daha iyi bir yer yapmak için buradayız.</p></div>
+      <div class="team-member"><div class="avatar">♛</div><strong>Kurucu</strong><span>@Titan</span></div>
+      <div class="team-member"><div class="avatar">⚔</div><strong>Yönetici</strong><span>@Yönetici</span></div>
+      <div class="team-member"><div class="avatar">◈</div><strong>Moderatör</strong><span>@Moderatör</span></div>
+      <div class="team-member"><div class="avatar">✦</div><strong>Rehber</strong><span>@Rehber</span></div>
+    </section>
+
+    <section class="join-banner section-wrap">
+      <div><p class="eyebrow">YENİ MACERAN BAŞLIYOR</p><h2>Sen de Titanlar'ın bir parçası ol.</h2><p>Toplulukta yerini al ve ekibe katıl.</p></div>
+      <a class="button" href="https://discord.gg/titanlar" target="_blank" rel="noopener noreferrer">◈ Discord'a Katıl <span>↗</span></a>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <a class="brand" href="#home"><span class="brand-mark">T</span><span>TITANLAR</span></a>
+    <p>© 2026 Titanlar Discord Topluluğu. Topluluk tarafından hazırlanmıştır.</p>
+    <a class="footer-link" href="https://discord.gg/titanlar" target="_blank" rel="noopener noreferrer">Discord'a katıl ↗</a>
+  </footer>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
