@@ -19,7 +19,15 @@
     <nav class="nav-links" id="nav-links">
       <a class="active" href="#home">Ana Sayfa</a><a href="#about">Hakkımızda</a><a href="#events">Etkinlikler</a><a href="#rules">Kurallar</a><a href="#team">Yetkili Ekibi</a><a href="#faq">SSS</a>
     </nav>
-    <a class="button button-small" href="https://discord.gg/titanlar" target="_blank" rel="noopener noreferrer">◈ Discord'a Katıl</a>
+    <div class="account-nav">
+      {% if session.get('user_id') %}
+        <a class="account-link" href="{{ url_for('account') }}">{{ session.get('username') }}</a>
+      {% else %}
+        <a class="account-link" href="{{ url_for('login') }}">Giriş</a>
+        <a class="button button-small" href="{{ url_for('register') }}">Kayıt Ol</a>
+      {% endif %}
+    </div>
+    <a class="button button-small discord-nav" href="https://discord.gg/titanlar" target="_blank" rel="noopener noreferrer">◈ Discord'a Katıl</a>
   </header>
 
   <main>
