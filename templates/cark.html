@@ -1,0 +1,284 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Titanlar | Ödül Çarkı</title>
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 14px;
+  font-family: Arial, sans-serif;
+  color: white;
+  background: radial-gradient(circle at top, #30204e, #090b13 70%);
+}
+
+.container {
+  width: 100%;
+  max-width: 560px;
+  padding: 28px 18px;
+  text-align: center;
+  background: #151827;
+  border: 1px solid #37334e;
+  border-radius: 24px;
+  box-shadow: 0 15px 60px #0008;
+}
+
+.tag {
+  color: #c4b5fd;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 4px;
+}
+
+h1 {
+  margin: 12px 0;
+  font-size: clamp(28px, 7vw, 42px);
+}
+
+.description {
+  color: #b8bdd0;
+  line-height: 1.6;
+}
+
+.wheel-box {
+  position: relative;
+  width: min(100%, 390px);
+  margin: 28px auto 22px;
+}
+
+canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 8px 18px #0008);
+}
+
+.pointer {
+  position: absolute;
+  z-index: 2;
+  top: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 17px solid transparent;
+  border-right: 17px solid transparent;
+  border-top: 34px solid white;
+}
+
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 21%;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border: 5px solid #e9d5ff;
+  border-radius: 50%;
+  background: #111322;
+  box-shadow: 0 0 0 4px #7c3aed;
+  font-size: clamp(8px, 2.5vw, 12px);
+  font-weight: 900;
+  pointer-events: none;
+}
+
+button {
+  padding: 16px 32px;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(100deg, #7c3aed, #db2777);
+  color: white;
+  font-size: 16px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 8px 25px #7c3aed55;
+}
+
+button:disabled {
+  opacity: .6;
+  cursor: wait;
+}
+
+#result {
+  min-height: 54px;
+  margin-top: 22px;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.5;
+}
+
+.note {
+  margin-top: 14px;
+  color: #999fb6;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.back {
+  display: inline-block;
+  margin-top: 20px;
+  color: #c4b5fd;
+  text-decoration: none;
+}
+</style>
+</head>
+
+<body>
+<main class="container">
+  <div class="tag">TITANLAR • ŞANSINI DENE</div>
+  <h1>🎁 Ödül Çarkı</h1>
+  <p class="description">
+    Çarkı döndür, şansını dene ve ödülünü öğren!
+  </p>
+
+  <div class="wheel-box">
+    <div class="pointer"></div>
+    <canvas id="wheel" width="700" height="700"></canvas>
+    <div class="center">TİTANLAR</div>
+  </div>
+
+  <button id="spin">🎯 ÇARKI DÖNDÜR</button>
+
+  <div id="result" aria-live="polite">
+    Hazır mısın? Bol şans! 🍀
+  </div>
+
+  <p class="note">
+    Bu çark rastgele sonuç gösterir. Discord rolü veya yetki
+    otomatik verilmez; bunun için ayrıca güvenli bir Discord
+    botu bağlantısı gerekir.
+  </p>
+
+  <a class="back" href="/">← Ana sayfaya dön</a>
+</main>
+
+<script>
+const canvas = document.getElementById("wheel");
+const ctx = canvas.getContext("2d");
+const button = document.getElementById("spin");
+const result = document.getElementById("result");
+
+const prizes = [
+  "Discord Rolü",
+  "Özel Yetki",
+  "Sürpriz Ödül"
+];
+
+const colors = [
+  "#7c3aed",
+  "#db2777",
+  "#0891b2"
+];
+
+const arc = (Math.PI * 2) / prizes.length;
+let rotation = 0;
+let spinning = false;
+
+function drawWheel() {
+  const center = canvas.width / 2;
+  const radius = center * 0.92;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.save();
+  ctx.translate(center, center);
+  ctx.rotate(rotation);
+
+  prizes.forEach((prize, i) => {
+    const start = -Math.PI / 2 + i * arc;
+    const end = start + arc;
+
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.arc(0, 0, radius, start, end);
+    ctx.closePath();
+    ctx.fillStyle = colors[i];
+    ctx.fill();
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 5;
+    ctx.stroke();
+
+    ctx.save();
+    ctx.rotate(start + arc / 2);
+    ctx.textAlign = "right";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "bold 29px Arial";
+    ctx.fillText(prize, radius * 0.82, 0, radius * 0.68);
+    ctx.restore();
+  });
+
+  ctx.beginPath();
+  ctx.arc(0, 0, radius, 0, Math.PI * 2);
+  ctx.strokeStyle = "#e9d5ff";
+  ctx.lineWidth = 10;
+  ctx.stroke();
+
+  ctx.restore();
+}
+
+button.addEventListener("click", () => {
+  if (spinning) return;
+
+  spinning = true;
+  button.disabled = true;
+  result.textContent = "🎡 Çark dönüyor...";
+
+  const startRotation = rotation;
+  const startTime = performance.now();
+  const duration = 4200;
+
+  // Kazanan dilimi dönüşten önce seçiyoruz.
+  const winningIndex = Math.floor(Math.random() * prizes.length);
+  const winningCenter = winningIndex * arc + arc / 2;
+
+  // Üstteki okun göstereceği dilimin merkezine dur.
+  const currentAngle = ((rotation % (2 * Math.PI)) + 2 * Math.PI)
+    % (2 * Math.PI);
+  const desiredAngle = (Math.PI * 1.5 - winningCenter
+    + 2 * Math.PI) % (2 * Math.PI);
+  const extraAngle = (desiredAngle - currentAngle
+    + 2 * Math.PI) % (2 * Math.PI);
+
+  const targetRotation = startRotation
+    + Math.PI * 2 * 6 + extraAngle;
+
+  function animate(now) {
+    const progress = Math.min(1, (now - startTime) / duration);
+    const eased = 1 - Math.pow(1 - progress, 4);
+
+    rotation = startRotation
+      + (targetRotation - startRotation) * eased;
+
+    drawWheel();
+
+    if (progress < 1) {
+      requestAnimationFrame(animate);
+    } else {
+      rotation = targetRotation % (Math.PI * 2);
+      drawWheel();
+
+      result.textContent = "🎉 Kazandığın sonuç: "
+        + prizes[winningIndex] + "!";
+
+      spinning = false;
+      button.disabled = false;
+    }
+  }
+
+  requestAnimationFrame(animate);
+});
+
+drawWheel();
+</script>
+</body>
+</html>
