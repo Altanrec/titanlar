@@ -507,11 +507,19 @@ input:focus { border-color: #a78bfa; }
         rotation = target % (2 * Math.PI);
         drawWheel();
 
-        // Kazanan ismini göster, 3 saniye sonra otomatik sil.
-        showResult("🏆 KAZANAN: " + prizes[winner], 3000);
+        /// Kazanan kişiyi önce kaydet ve sonucu göster.
+const winnerName = prizes[winner];
+showResult("🏆 KAZANAN: " + winnerName, 3000);
 
-        spinning = false;
-        spin.disabled = false;
+// Kazanan kişiyi çarktan ve listeden sil.
+prizes.splice(winner, 1);
+save();
+renderList();
+drawWheel();
+
+// Çarkı yeniden kullanılabilir hâle getir.
+spinning = false;
+spin.disabled = false;
       }
     }
 
