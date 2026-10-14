@@ -34,14 +34,21 @@ def init_db():
                 username TEXT NOT NULL COLLATE NOCASE UNIQUE, 
                 email TEXT NOT NULL COLLATE NOCASE UNIQUE, 
                 password_hash TEXT NOT NULL, 
-                avatar TEXT DEFAULT 'default.png',
-                points INTEGER DEFAULT 0,
-                snake_high INTEGER DEFAULT 0,
-                xox_wins INTEGER DEFAULT 0,
-                memory_best INTEGER DEFAULT 0,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
+        # Eksik sütunları güvenli bir şekilde ekle (500 hatasını önler)
+        existing_cols = [col["name"] for col in db.execute("PRAGMA table_info(users)").fetchall()]
+        if "avatar" not in existing_cols:
+            db.execute("ALTER TABLE users ADD COLUMN avatar TEXT DEFAULT 'default.png'")
+        if "points" not in existing_cols:
+            db.execute("ALTER TABLE users ADD COLUMN points INTEGER DEFAULT 0")
+        if "snake_high" not in existing_cols:
+            db.execute("ALTER TABLE users ADD COLUMN snake_high INTEGER DEFAULT 0")
+        if "xox_wins" not in existing_cols:
+            db.execute("ALTER TABLE users ADD COLUMN xox_wins INTEGER DEFAULT 0")
+        if "memory_best" not in existing_cols:
+            db.execute("ALTER TABLE users ADD COLUMN memory_best INTEGER DEFAULT 0")
         db.commit()
 
 init_db()
