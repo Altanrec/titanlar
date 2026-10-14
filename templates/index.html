@@ -10,6 +10,16 @@
         <h1>⚔️ Titanlar Dünyasına Hoş Geldin!</h1>
         <p>Oyna, rekor kır, liderlik tablosunda zirveye yerleş.</p>
 
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <ul class="flashes">
+            {% for category, message in messages %}
+              <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+
         <div class="nav-links" style="margin-top: 30px;">
             {% if session.get('user_id') %}
                 <a href="{{ url_for('account') }}" class="btn">Profilim</a>
