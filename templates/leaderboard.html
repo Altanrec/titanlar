@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Genel Sıralama - Titanlar</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🏆 Titanlar Liderlik Tablosu</h1>
+        <table class="leaderboard-table">
+            <thead>
+                <tr>
+                    <th>Sıra</th>
+                    <th>Oyuncu</th>
+                    <th>Puan</th>
+                    <th>Snake Rekor</th>
+                    <th>XOX Galibiyet</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in users %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>
+                        <img src="{{ url_for('static', filename='images/' + (u.avatar or 'default.png')) }}" width="24" style="vertical-align:middle; border-radius:50%;">
+                        {{ u.username }}
+                    </td>
+                    <td><b>{{ u.points }}</b></td>
+                    <td>{{ u.snake_high }}</td>
+                    <td>{{ u.xox_wins }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div style="margin-top: 20px;">
+            <a href="{{ url_for('games_hub') }}" class="btn">Oyun Salonu</a>
+            <a href="{{ url_for('account') }}" class="btn">Profilim</a>
+            <a href="{{ url_for('home') }}" class="btn">Ana Sayfa</a>
+        </div>
+    </div>
+</body>
+</html>
